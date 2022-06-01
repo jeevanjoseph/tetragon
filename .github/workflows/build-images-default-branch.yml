@@ -1,4 +1,4 @@
-name: Image CI Latest
+name: Image CI Latest - MultiPlatform
 
 on:
   push:
