@@ -20,7 +20,7 @@ COPY --from=hubble-libbpf /go/src/github.com/covalentio/hubble-fgs/src/libbpf.so
 COPY --from=hubble-libbpf /go/src/github.com/covalentio/hubble-fgs/src/libbpf.a /usr/local/lib/
 RUN ldconfig /usr/local/
 COPY . ./
-RUN GOOS=${TARGETOS} GOOARCH=${TARGETARCH} make tetragon-image LOCAL_CLANG=1
+RUN GOOS=${TARGETOS} GOARCH=${TARGETARCH} make tetragon-image LOCAL_CLANG=1
 
 FROM docker.io/library/golang:1.17.8-alpine3.15@sha256:b35984144ec2c2dfd6200e112a9b8ecec4a8fd9eff0babaff330f1f82f14cb2a as gops
 RUN apk add --no-cache binutils git \
