@@ -10,6 +10,8 @@ WORKDIR /go/src/github.com/cilium/tetragon
 COPY . ./
 
 FROM quay.io/cilium/cilium-builder:b7a9dcdcadd77d38db87bbd06b9bc238e9dab5a0@sha256:eecc017a6ccf0c7884f1ffcf10e58462a272f5e41c0ece09adb351e8839e3157 as hubble-builder
+ARG TARGETARCH
+ARG TARGETOS
 WORKDIR /go/src/github.com/cilium/tetragon
 RUN apt-get update && apt-get install -y libelf-dev zlib1g-dev
 COPY --from=hubble-libbpf /go/src/github.com/covalentio/hubble-fgs/src/libbpf.so.0.2.0 /usr/local/lib/
@@ -18,7 +20,7 @@ COPY --from=hubble-libbpf /go/src/github.com/covalentio/hubble-fgs/src/libbpf.so
 COPY --from=hubble-libbpf /go/src/github.com/covalentio/hubble-fgs/src/libbpf.a /usr/local/lib/
 RUN ldconfig /usr/local/
 COPY . ./
-RUN make tetragon-image LOCAL_CLANG=1
+RUN GOOS=${TARGETOS} GOOARCH=${TARGETARCH} make tetragon-image LOCAL_CLANG=1
 
 FROM docker.io/library/golang:1.17.8-alpine3.15@sha256:b35984144ec2c2dfd6200e112a9b8ecec4a8fd9eff0babaff330f1f82f14cb2a as gops
 RUN apk add --no-cache binutils git \
