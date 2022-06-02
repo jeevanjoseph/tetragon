@@ -1,4 +1,6 @@
 GO ?= go
+GOOS ?= linux
+GOARCH ?= amd64
 INSTALL = $(QUIET)install
 BINDIR ?= /usr/local/bin
 CONTAINER_ENGINE ?= docker
